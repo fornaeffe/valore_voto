@@ -144,4 +144,17 @@ dimnames(matrice) <- list(effetto_su = liste$Partito, voto_a = liste$Partito)
 
 matrice
 
-write.csv(matrice, "matrice.csv")
+# write.csv(matrice, "matrice.csv")
+# 
+# matrice <- read.csv("matrice.csv", row.names = 1)
+
+library(RJSONIO)
+
+matricePerJSON <- matrice
+colnames(matricePerJSON) <- NULL
+
+perJSON <- list(partiti = rownames(matrice), preferenze = rep(0, nrow(matrice)), matrice = matricePerJSON)
+
+json <- toJSON(perJSON)
+
+write(json, "public/matrice.json")

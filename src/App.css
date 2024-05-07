@@ -1,0 +1,9 @@
+.griglia-preferenze {
+    display: grid;
+    grid-template-columns: max-content min-content;
+}
+
+.griglia-output {
+    display: grid;
+    grid-template-columns: max-content min-content;
+}
