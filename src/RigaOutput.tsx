@@ -1,4 +1,6 @@
-import Typography from '@mui/material/Typography';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Paper from '@mui/material/Paper';
 
 export type Output = {
     partito: string,
@@ -6,8 +8,17 @@ export type Output = {
   }
 
 export default function RigaOutput(props: {output : Output, i : number}) {
-    return <>
-        <Typography variant="body1">{props.output.partito}</Typography>
-        <Typography variant="body1" textAlign="right">{props.output.valore.toFixed(1)}</Typography>
-    </>
+
+    if (props.i === 0) {
+        return <Paper sx={{bgcolor : 'lightgreen'}}>
+            <ListItem>
+                <ListItemText primary={props.output.partito} secondary={"punteggio: "+props.output.valore.toFixed(1)} /> 
+            </ListItem>
+        </Paper>
+    }
+
+    return <ListItem>
+        <ListItemText primary={props.output.partito} secondary={"punteggio: "+props.output.valore.toFixed(1)} />        
+    </ListItem>
+    
 }
