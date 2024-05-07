@@ -12,7 +12,6 @@ import RigaOutput from './RigaOutput';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
 import List from '@mui/material/List';
 
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
@@ -61,7 +60,7 @@ function App() {
     )
   } else {
     console.log(stato)
-    arrayPreferenze = stato.partiti.map((partito, i) => <RigaPreferenza key={i} nome={partito} i={i} onChange={(e, value) => aggiornaPreferenze(i, value) } />)
+    arrayPreferenze = stato.partiti.map((partito, i) => <RigaPreferenza key={i} nome={partito} i={i} onChange={(_e, value) => aggiornaPreferenze(i, value) } />)
 
     output = stato.partiti.map((partito, i) => ({
       partito: partito,
