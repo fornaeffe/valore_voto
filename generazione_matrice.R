@@ -4,7 +4,7 @@ library(parallel)
 # Parametri
 
 # Numero di simulazioni
-nsims <- 100000
+nsims <- 1000000
 # Larghezza intervallo (in voti) per il calcolo dell'effetto del voto
 intervallo <- 1000
 
