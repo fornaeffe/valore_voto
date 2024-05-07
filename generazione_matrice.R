@@ -4,9 +4,9 @@ library(parallel)
 # Parametri
 
 # Numero di simulazioni
-nsims <- 10000
+nsims <- 100000
 # Larghezza intervallo (in voti) per il calcolo dell'effetto del voto
-intervallo <- 10000
+intervallo <- 1000
 
 # Dati
 
@@ -58,7 +58,7 @@ liste$Percentuale_sd[is.na(liste$Percentuale_sd)] <-
   mean(liste$Percentuale_sd, na.rm = TRUE)
 
 
-simulazione <- function(liste) {
+simulazione <- function(simulaizone, liste, intervallo, elettori, astensione, seggi) {
   # Simulo l'astensione
   votanti <- floor(
     elettori *
@@ -72,87 +72,74 @@ simulazione <- function(liste) {
   # Cifra elettorale nazionale
   liste$voti <- floor(p * votanti)
   
-  # Percentuali nazionali sui voti validi
-  liste$p <- liste$voti / sum(liste$voti)
-  
-  # Sbarramento
-  liste$soglia <- liste$p >= 0.04 & liste$Partito != "altre_liste"
-  
-  # Quoziente elettorale nazionale
-  qn <- floor(sum(liste$voti[liste$soglia]) / seggi)
-  
-  liste$seggi_interi <- floor(liste$voti / qn) * liste$soglia
-  
-  seggi_mancanti <- seggi - sum(liste$seggi_interi)
-  
-  liste$resti <- liste$voti %% qn * liste$soglia
-  
-  liste$seggio_da_resti <- 0
-  liste$seggio_da_resti[
-    order(
-      liste$resti, 
-      liste$voti, 
-      runif(liste$voti), 
-      decreasing = TRUE
-    )[seq_len(seggi_mancanti)]
-  ] <- 1
+  scrutinio <- function(liste) {
+    # Percentuali nazionali sui voti validi
+    liste$p <- liste$voti / sum(liste$voti)
     
-  
-  liste$seggi <- liste$seggi_interi + liste$seggio_da_resti
-  
-  return(liste[,c("voti", "seggi")])
-  
-}
-
-
-risultato <- replicate(nsims, simulazione(liste))
-
-voti <- array(unlist(risultato[1,]), dim = c(nrow(liste), nsims), dimnames = list(Partito = liste$Partito))
-seggi <- array(unlist(risultato[2,]), dim = c(nrow(liste), nsims), dimnames = list(Partito = liste$Partito))
-
-calcola_effetto_voto <- function(i, voti, seggi, intervallo, nsims, liste) {
-  x <- seq(min(voti[i, ]), max(voti[i, ]), by = intervallo)
-  istogramma <- hist(voti[i, ], breaks = c(x, max(voti[i, ])), plot = FALSE)
-  
-  effetti <- vapply(1:nrow(liste), function(j) {
-    lo <- loess(
-      seggi[j, ] ~ voti[i, ],
-      control = loess.control(statistics = "none")
-    )
+    # Sbarramento
+    liste$soglia <- liste$p >= 0.04 & liste$Partito != "altre_liste"
     
-    png(paste0("grafici/", i, "_", j, ".png"))
-    plot(
-      seggi[j, ] ~ voti[i, ],
-      main = paste("Voto a",liste$Partito[i]),
-      sub = paste("Effetto su", liste$Partito[j])
-    )
-    lines(predict(lo, x) ~ x, col = "red", lwd = 2)
-    dev.off()
+    # Quoziente elettorale nazionale
+    qn <- floor(sum(liste$voti[liste$soglia]) / seggi)
     
-    y <- predict(lo, x)
-    differenze <- diff(y)
-    return(sum(c(differenze, 0) * istogramma$counts) / nsims / intervallo * 1000000)
-  }, 1.0)
+    liste$seggi_interi <- floor(liste$voti / qn) * liste$soglia
+    
+    seggi_mancanti <- seggi - sum(liste$seggi_interi)
+    
+    liste$resti <- liste$voti %% qn * liste$soglia
+    
+    liste$seggio_da_resti <- 0
+    liste$seggio_da_resti[
+      order(
+        liste$resti, 
+        liste$voti, 
+        runif(liste$voti), 
+        decreasing = TRUE
+      )[seq_len(seggi_mancanti)]
+    ] <- 1
+    
+    
+    liste$seggi <- liste$seggi_interi + liste$seggio_da_resti
+    
+    return(liste$seggi)
+  }
   
-  return(effetti)
+  
+  
+  calcola_effetto <- function(i, liste, intervallo) {
+    liste2 <- liste
+    liste2$voti[i] <- liste2$voti[i] + intervallo
+    
+    return(scrutinio(liste2) - scrutinio(liste))
+  }
+  
+  return(sapply(
+    seq_len(nrow(liste)), 
+    calcola_effetto, 
+    liste = liste, 
+    intervallo = intervallo
+  ))
 }
 
 cl <- makeCluster(parallel::detectCores())
 
-matrice <- parSapply(
+risultato <- parSapply(
   cl, 
-  1:nrow(liste), 
-  calcola_effetto_voto, 
-  voti = voti, 
-  seggi = seggi,
+  1:nsims, 
+  simulazione, 
+  liste = liste,
   intervallo = intervallo,
-  nsims = nsims,
-  liste = liste
+  elettori = elettori,
+  astensione = astensione,
+  seggi = seggi,
+  simplify = "array"
 )
 
 stopCluster(cl)
 
-# matrice <- vapply(1:nrow(liste), calcola_effetto_voto, rep(1.0, nrow(liste)))
+matrice <- apply(risultato, c(1,2), mean) / intervallo * 1000000
+
+
 dimnames(matrice) <- list(effetto_su = liste$Partito, voto_a = liste$Partito)
 
 matrice
