@@ -81,7 +81,16 @@ function App() {
       <CssBaseline />
       <Container>
         <Grid container spacing={2}>
-          <Grid item xs={12}><Typography variant="h4">Chi mi conviene votare?</Typography></Grid>
+          <Grid item xs={12}>
+            <Typography variant="h4">Chi mi conviene votare?</Typography>
+            <Typography variant="subtitle1">
+              Un calcolatore del "voto utile": <br/>
+              indica da chi ti sentiresti rappresentato,
+              e scopri come il tuo voto può aiutare (o ostacolare)
+              l'elezione dei candidati delle liste
+              che ti rappresentano.
+            </Typography>
+          </Grid>
           <Grid item xs={12} md={6}>
             <Card>
               <CardContent>
@@ -180,6 +189,9 @@ function App() {
           <Grid item xs={12}>
             <Card>
               <CardContent>
+                <Typography gutterBottom>
+                  In questa pagina non vengono raccolti dati né viene fatto uso di cookie.
+                </Typography>
                 <Typography gutterBottom>
                   Creato da Luca Fornasari. Disclaimer: per trasparenza, avviso che sono iscritto al partito Europa Verde.
                 </Typography>
