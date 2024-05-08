@@ -9,7 +9,7 @@ export type Output = {
 
 export default function RigaOutput(props: {output : Output, i : number}) {
 
-    if (props.i === 0) {
+    if (props.i === 0 && props.output.valore !== 0) {
         return <Paper sx={{bgcolor : 'lightgreen'}}>
             <ListItem>
                 <ListItemText primary={props.output.partito} secondary={"punteggio: "+props.output.valore.toFixed(1)} /> 
