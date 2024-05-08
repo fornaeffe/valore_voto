@@ -60,7 +60,7 @@ function App() {
     )
   } else {
     console.log(stato)
-    arrayPreferenze = stato.partiti.map((partito, i) => <RigaPreferenza key={i} nome={partito} i={i} onChange={(_e, value) => aggiornaPreferenze(i, value) } />)
+    arrayPreferenze = stato.partiti.map((partito, i) => <RigaPreferenza key={partito} nome={partito} i={i} onChange={(_e, value) => aggiornaPreferenze(i, value) } />)
 
     output = stato.partiti.map((partito, i) => ({
       partito: partito,
@@ -70,7 +70,7 @@ function App() {
     output.sort((a, b) => b.valore - a.valore)
 
     arrayOutput = output.map((out, i) => {
-      return <RigaOutput output={out} i={i} key={i} />
+      return <RigaOutput output={out} i={i} key={out.partito} />
     })
   }
 
