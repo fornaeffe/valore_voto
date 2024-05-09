@@ -79,12 +79,12 @@ function App() {
   return (
     <>
       <CssBaseline />
-      <Container>
+      <Container maxWidth="md">
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Typography variant="h4">Chi mi conviene votare?</Typography>
             <Typography variant="subtitle1">
-              Un calcolatore del "voto utile": <br/>
+              Un calcolatore del "voto utile": 
               indica da chi ti sentiresti rappresentato,
               e scopri come il tuo voto può aiutare (o ostacolare)
               l'elezione dei candidati delle liste
