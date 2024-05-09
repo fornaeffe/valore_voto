@@ -7,3 +7,10 @@
     display: grid;
     grid-template-columns: max-content min-content;
 }
+
+.riga-seleziona-partito {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: baseline;
+    align-items: baseline
+}

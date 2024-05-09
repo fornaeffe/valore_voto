@@ -11,24 +11,31 @@ import RigaPreferenza from './RigaPreferenza';
 import RigaOutput from './RigaOutput';
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
 import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined';
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
+import RigaEffetto from './RigaEffetto';
+
+// TODO: spostare in fondo altre liste e togliere l'underscore
 
 type Stato = {
+  partitoSelezionato : number,
   partiti : string[],
   preferenze : number[],
   matrice : number[][]
 } | undefined
 
-const matriceVuota : Stato = undefined
 
 function App() {
 
-  const [stato, setStato] = useState(matriceVuota)
+  const [stato, setStato] = useState(undefined as Stato)
 
   let arrayPreferenze : JSX.Element[] = []
   let output : {
@@ -36,6 +43,19 @@ function App() {
     valore: number
   }[]
   let arrayOutput : JSX.Element[] = []
+  let arrayEffetti : JSX.Element[] = []
+  let minmax = [-1, 1]
+
+  function calcolaMinMax(matrice : number[][]) {
+    const arr = matrice.reduce(function (p, c) {
+      return p.concat(c)
+    })
+
+    return([
+      Math.min(...arr),
+      Math.max(...arr)
+    ])
+  }
 
   function aggiornaPreferenze(i: number, value: number | null) {
     if (stato && value != null) {
@@ -50,14 +70,24 @@ function App() {
     }
   }
 
+  function aggiornaPartitoSelezionato(event: SelectChangeEvent) {
+    setStato(prevState => {
+      if (!prevState) return prevState;
+
+      return{
+        ...prevState,
+        partitoSelezionato: parseInt(event.target.value) 
+      }
+    })
+  }
+
   if (stato == undefined) {
     fetch("matrice.json")
     .then(response => response.json())
     .then(json => 
-      setStato(json)
+      setStato({partitoSelezionato: 0, ...json})
     )
   } else {
-    console.log(stato)
     arrayPreferenze = stato.partiti.map((partito, i) => <RigaPreferenza key={partito} nome={partito} i={i} onChange={(_e, value) => aggiornaPreferenze(i, value) } />)
 
     output = stato.partiti.map((partito, i) => ({
@@ -70,6 +100,16 @@ function App() {
     arrayOutput = output.map((out, i) => {
       return <RigaOutput output={out} i={i} key={out.partito} />
     })
+
+    minmax = calcolaMinMax(stato.matrice)
+
+    arrayEffetti = stato.matrice[stato.partitoSelezionato].map((effetto, i) => <RigaEffetto 
+      partito={stato.partiti[i]} 
+      effetto={effetto} 
+      max={minmax[1]}
+      min={minmax[0]}
+      key={stato.partiti[i]}
+    />)
   }
 
 
@@ -99,6 +139,31 @@ function App() {
             <Typography variant="h5" gutterBottom>Voto più efficace:</Typography>
             <List>
               {arrayOutput}
+            </List>
+          </Grid>
+          <Grid item xs={12}>
+            <div className='riga-seleziona-partito'>
+              <Typography variant="h6" gutterBottom>Effetti di un voto a&nbsp;</Typography>
+
+              <FormControl variant='standard' sx={{ minWidth: 90 }}>
+                <InputLabel id="seleziona-partito-label">Partito</InputLabel>
+                <Select
+                  labelId='seleziona-partito-label'
+                  id="seleziona-partito"
+                  value={stato ? stato.partitoSelezionato.toString() : ''}
+                  label="Partito"
+                  onChange={aggiornaPartitoSelezionato}
+                >
+                  {stato?.partiti.map((partito, i) => <MenuItem value={i} key={partito}>{partito}</MenuItem>)}
+                </Select>
+              </FormControl>
+            </div>
+            <Typography variant="subtitle1">
+              I numeri indicano quali sono le probabilità (su un milione) che un voto 
+              a {stato?.partiti[stato.partitoSelezionato]} aggiunga (o tolga) un seggio a ciascuno di questi partiti:
+            </Typography>            
+            <List>
+              {arrayEffetti}
             </List>
           </Grid>
           <Grid item xs={12}>

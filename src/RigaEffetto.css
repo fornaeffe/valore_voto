@@ -1,0 +1,11 @@
+.barra {
+    height: 8px;
+    transition: all 1s;
+}
+
+.contenitore-riga-effetto {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
