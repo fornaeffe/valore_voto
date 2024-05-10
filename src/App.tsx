@@ -122,11 +122,11 @@ function App() {
 
           <Grid item xs={12}>
             <Typography variant="h4">Chi mi conviene votare?</Typography>
-            <Typography variant="subtitle1" maxWidth={"md"}>
+            <Typography variant="body1" maxWidth={"md"}>
               Un calcolatore del "voto utile" per le Europee 2024: 
               scopri come il voto può aiutare (o ostacolare)
               l'elezione dei candidati di ciascuna lista,
-              indica da chi ti sentiresti rappresentato,
+              indica le liste che ti rappresentano di più,
               e calcola il voto più efficace per rendere il Parlamento Europeo
               più vicino alle tue iee.
             </Typography>
@@ -149,7 +149,7 @@ function App() {
                 </Select>
               </FormControl>
             </div>
-            <Typography variant="subtitle1"  maxWidth={"md"}>
+            <Typography variant="body1"  maxWidth={"md"}>
               I numeri indicano quali sono le probabilità (su un milione) che un voto 
               a {stato?.partiti[stato.partitoSelezionato]} aggiunga (o tolga) un seggio a ciascuna di queste liste:
             </Typography>            
@@ -159,36 +159,68 @@ function App() {
           </Grid>
 
           <Grid item xs={12} md={6} xl={4}>
-            <Typography variant="h6" gutterBottom>Quanto ti rappresentano questi partiti?</Typography>
+            <Typography variant="h6">Quanto ti rappresentano queste liste?</Typography>
+            <Typography variant="body1">
+              Indicalo cliccando sulle faccine, e la pagina calcolerà qual è il voto che più probabilmente
+              aiuterà ad eleggere persone vicine alle tue idee.
+            </Typography>
             <List>
               {arrayPreferenze}
             </List>            
           </Grid>
 
           <Grid item xs={12} md={6} xl={4}>
-            <Typography variant="h6" gutterBottom>Voto più efficace:</Typography>
+            <Typography variant="h6">Voto più efficace</Typography>
+            <Typography variant="body1">
+              Più il punteggio è alto, più è probabile che dare il voto alla lista indicata
+              contribuisca ad eleggere persone vicine alle tue idee.
+            </Typography>
             <List>
               {arrayOutput}
             </List>
           </Grid>
           
           <Grid item xs={12} lg={8}>
-            <Typography variant="h5" gutterBottom>Cos'è questa cosa?</Typography>
+            <Typography variant="h6" gutterBottom>A cosa serve questa cosa?</Typography>
             <Typography gutterBottom>
-              Questa pagina cerca di rispondere alla domanda: 
-              "Se alle prossime Europee voto il partito XY, verranno elette persone che mi rappresentano?".
+              Tutto nasce da una domanda che mi sono fatto.
             </Typography>
             <Typography gutterBottom>
-              In altre parole, cerca di capire qual è il "voto utile".
+              Alle elezioni Europee c'è uno sbarramento del 4%:
+              se una lista non arriva ad avere il 4% dei voti validi, non elegge nessuno.
             </Typography>
             <Typography gutterBottom>
-              In base alle preferenze espresse, il punteggio indica quanto aumenta (o diminuisce) la probabilità che vengano elette persone che
-              ti rappresentano, votando un certo partito.
+              Mi sono quindi chiesto: se voto una lista che potrebbe non raggiungere il 4%,
+              è più probabile che il mio voto contribuisca a superare la soglia
+              (e quindi eleggere persone che mi rappresentano), oppure è più probabile
+              che la lista rimanga sotto la soglia?
+            </Typography>
+            <Typography gutterBottom>
+              Sarebbe più efficace votare una lista da cui mi sento un po' meno rappresentato,
+              ma che sicuramente supererà la soglia?
+            </Typography>
+            <Typography gutterBottom>
+              Quale di queste due opzioni renderebbe, nel complesso,
+              il Parlamento Europeo più vicino alle mie idee?
+            </Typography>
+            <Typography gutterBottom>
+              Per rispondere a questa domanda ho realizzato questa web app.
+              Partendo dai risultati dei sondaggi elettorali, stima la probabilità
+              che, aggiungendo un voto in più ad una lista, aumentino o diminuiscano
+              i seggi assegnati alle varie liste. Pesa poi questi seggi in più o in meno
+              in base a quanto mi sento rappresentato da ciascuna lista:
+              se un voto fa aumentare i seggi di una lista da cui mi sento rappresentato
+              il punteggio aumenta, se fa aumentare i seggi di una lista 
+              da cui non mi sento rappresentato il punteggio diminuisce.
+              La scelta di voto che ottiene il punteggio più alto è quella che,
+              probabilmente, permette eleggere un maggior numero di persone dalle quali
+              mi sento rappresentato e/o un minor numero di persone dalle quali
+              non mi sento rappresentato.
             </Typography>
           </Grid>
 
           <Grid item xs={12} lg={8}>
-            <Typography variant="h5" gutterBottom>Come viene calcolato il punteggio?</Typography>
+            <Typography variant="h6" gutterBottom>Come funziona?</Typography>
             <Typography gutterBottom>
               Facciamo un esempio: immaginiamo di voler calcolare il punteggio di Alleanza Verdi e Sinistra
             </Typography>
@@ -203,10 +235,11 @@ function App() {
             <Typography gutterBottom>
               Ho quindi fatto la media, tra tutti i possibili risultati, di quanti seggi venivano guadagnati o persi da ciascun partito
               aggiungendo 1000 voti ad Alleanza Verdi e Sinistra. Ho poi moltiplicato questa media per 1000: il numero ottenuto indica
-              quanti milionesimi di seggio vengono aggiunti o tolti, in media, a ciascun partito, per ogni voto dato ad Alleanza Verdi e Sinistra.                                    
+              quanti milionesimi di seggio vengono aggiunti o tolti, in media, a ciascun partito, per ogni voto dato ad Alleanza Verdi e Sinistra.
+              Questo risultato è quello visibile nella prima tabella.                                    
             </Typography>
             <Typography gutterBottom>
-              A questo punto moltiplico ciascuno di questi numeri per la preferenza che hai assegnato: <br />
+              A questo punto moltiplico ciascuno di questi numeri per la preferenza che ho assegnato: <br />
               -2 per <SentimentVeryDissatisfiedIcon color="error" /><br />
               -1 per <SentimentDissatisfiedIcon color="error" /><br />
               0 per <SentimentSatisfiedIcon color="warning" /><br />
@@ -216,15 +249,15 @@ function App() {
             <Typography gutterBottom>
               Ad esempio, se un voto ad Alleanza Verdi e Sinistra in media aggiunge tre milionesimi di seggio ad Alleanza Verdi e Sinistra
               ma nello stesso tempo ne toglie un milionesimo al Partito Democratico, 
-              e tu hai segnato 
+              e ho segnato 
               <SentimentSatisfiedAltIcon color="success" /> per Alleanza Verdi e Sinistra
               e <SentimentVerySatisfiedIcon color="success" /> per il Partito Democratico,
-              il punteggio sarà di ( 3 milionesimi x 1 ) + ( - 1 milionesimo x 2) = 1
+              il punteggio sarà di ( 3 milionesimi x 1 ) + ( - 1 milionesimo x 2) = +1
             </Typography>
             <Typography gutterBottom>
               Questo viene ripetuto per ciascun partito:
               votare il partito con il punteggio più alto sarà quindi la scelta che,
-              in media, aumenterà di più il numero di persone che ti rappresentano nel Parlamento Europeo.
+              in media, aumenterà di più il numero di persone che mi rappresentano nel Parlamento Europeo.
             </Typography>
                 
           </Grid>
