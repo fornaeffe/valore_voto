@@ -117,7 +117,7 @@ function App() {
   return (
     <>
       <CssBaseline />
-      <Container maxWidth="xl">
+      <Container maxWidth="md">
         <Grid container spacing={4}>
 
           <Grid item xs={12}>
@@ -132,14 +132,13 @@ function App() {
             </Typography>
           </Grid>
 
-          <Grid item xs={12} xl={4}>
+          <Grid item xs={12}>
             <div className='riga-seleziona-partito'>
               <Typography variant="h6" gutterBottom>Effetti di un voto a&nbsp;</Typography>
 
               <FormControl variant='standard' sx={{ minWidth: 90 }}>
-                <InputLabel id="seleziona-partito-label">Lista</InputLabel>
+                {/* <InputLabel id="seleziona-partito-label">Lista</InputLabel> */}
                 <Select
-                  labelId='seleziona-partito-label'
                   id="seleziona-partito"
                   value={stato ? stato.partitoSelezionato.toString() : ''}
                   label="Lista"
@@ -149,7 +148,7 @@ function App() {
                 </Select>
               </FormControl>
             </div>
-            <Typography variant="body1"  maxWidth={"md"}>
+            <Typography variant="body1">
               I numeri indicano quali sono le probabilità (su un milione) che un voto 
               a {stato?.partiti[stato.partitoSelezionato]} aggiunga (o tolga) un seggio a ciascuna di queste liste:
             </Typography>            
@@ -158,7 +157,7 @@ function App() {
             </List>
           </Grid>
 
-          <Grid item xs={12} md={6} xl={4}>
+          <Grid item xs={12} md={6}>
             <Typography variant="h6">Quanto ti rappresentano queste liste?</Typography>
             <Typography variant="body1">
               Indicalo cliccando sulle faccine, e la pagina calcolerà qual è il voto che più probabilmente
@@ -169,7 +168,7 @@ function App() {
             </List>            
           </Grid>
 
-          <Grid item xs={12} md={6} xl={4}>
+          <Grid item xs={12} md={6}>
             <Typography variant="h6">Voto più efficace</Typography>
             <Typography variant="body1">
               Più il punteggio è alto, più è probabile che dare il voto alla lista indicata
@@ -180,7 +179,7 @@ function App() {
             </List>
           </Grid>
           
-          <Grid item xs={12} lg={8}>
+          <Grid item xs={12}>
             <Typography variant="h6" gutterBottom>A cosa serve questa cosa?</Typography>
             <Typography gutterBottom>
               Tutto nasce da una domanda che mi sono fatto.
@@ -219,7 +218,7 @@ function App() {
             </Typography>
           </Grid>
 
-          <Grid item xs={12} lg={8}>
+          <Grid item xs={12}>
             <Typography variant="h6" gutterBottom>Come funziona?</Typography>
             <Typography gutterBottom>
               Facciamo un esempio: immaginiamo di voler calcolare il punteggio di Alleanza Verdi e Sinistra
@@ -261,12 +260,12 @@ function App() {
             </Typography>
                 
           </Grid>
-          <Grid item xs={12} lg={8}>
+          <Grid item xs={12}>
             <Typography gutterBottom>
               Dettagli sul <a href="https://github.com/fornaeffe/valore_voto">repository di github</a>
             </Typography>
           </Grid>
-          <Grid item xs={12} lg={8}>
+          <Grid item xs={12}>
             <Typography gutterBottom>
               In questa pagina non vengono raccolti dati né viene fatto uso di cookie.
             </Typography>
