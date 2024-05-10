@@ -117,56 +117,62 @@ function App() {
   return (
     <>
       <CssBaseline />
-      <Container maxWidth="md">
-        <Grid container spacing={2}>
+      <Container maxWidth="xl">
+        <Grid container spacing={4}>
+
           <Grid item xs={12}>
             <Typography variant="h4">Chi mi conviene votare?</Typography>
-            <Typography variant="subtitle1">
-              Un calcolatore del "voto utile": 
+            <Typography variant="subtitle1" maxWidth={"md"}>
+              Un calcolatore del "voto utile" per le Europee 2024: 
+              scopri come il voto può aiutare (o ostacolare)
+              l'elezione dei candidati di ciascuna lista,
               indica da chi ti sentiresti rappresentato,
-              e scopri come il tuo voto può aiutare (o ostacolare)
-              l'elezione dei candidati delle liste
-              che ti rappresentano.
+              e calcola il voto più efficace per rendere il Parlamento Europeo
+              più vicino alle tue iee.
             </Typography>
           </Grid>
-          <Grid item xs={12} md={6}>
-            <Typography variant="h5" gutterBottom>Quanto ti rappresentano questi partiti?</Typography>
-            <List>
-              {arrayPreferenze}
-            </List>            
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Typography variant="h5" gutterBottom>Voto più efficace:</Typography>
-            <List>
-              {arrayOutput}
-            </List>
-          </Grid>
-          <Grid item xs={12}>
+
+          <Grid item xs={12} xl={4}>
             <div className='riga-seleziona-partito'>
               <Typography variant="h6" gutterBottom>Effetti di un voto a&nbsp;</Typography>
 
               <FormControl variant='standard' sx={{ minWidth: 90 }}>
-                <InputLabel id="seleziona-partito-label">Partito</InputLabel>
+                <InputLabel id="seleziona-partito-label">Lista</InputLabel>
                 <Select
                   labelId='seleziona-partito-label'
                   id="seleziona-partito"
                   value={stato ? stato.partitoSelezionato.toString() : ''}
-                  label="Partito"
+                  label="Lista"
                   onChange={aggiornaPartitoSelezionato}
                 >
                   {stato?.partiti.map((partito, i) => <MenuItem value={i} key={partito}>{partito}</MenuItem>)}
                 </Select>
               </FormControl>
             </div>
-            <Typography variant="subtitle1">
+            <Typography variant="subtitle1"  maxWidth={"md"}>
               I numeri indicano quali sono le probabilità (su un milione) che un voto 
-              a {stato?.partiti[stato.partitoSelezionato]} aggiunga (o tolga) un seggio a ciascuno di questi partiti:
+              a {stato?.partiti[stato.partitoSelezionato]} aggiunga (o tolga) un seggio a ciascuna di queste liste:
             </Typography>            
             <List>
               {arrayEffetti}
             </List>
           </Grid>
-          <Grid item xs={12}>
+
+          <Grid item xs={12} md={6} xl={4}>
+            <Typography variant="h6" gutterBottom>Quanto ti rappresentano questi partiti?</Typography>
+            <List>
+              {arrayPreferenze}
+            </List>            
+          </Grid>
+
+          <Grid item xs={12} md={6} xl={4}>
+            <Typography variant="h6" gutterBottom>Voto più efficace:</Typography>
+            <List>
+              {arrayOutput}
+            </List>
+          </Grid>
+          
+          <Grid item xs={12} lg={8}>
             <Typography variant="h5" gutterBottom>Cos'è questa cosa?</Typography>
             <Typography gutterBottom>
               Questa pagina cerca di rispondere alla domanda: 
@@ -180,7 +186,8 @@ function App() {
               ti rappresentano, votando un certo partito.
             </Typography>
           </Grid>
-          <Grid item xs={12}>
+
+          <Grid item xs={12} lg={8}>
             <Typography variant="h5" gutterBottom>Come viene calcolato il punteggio?</Typography>
             <Typography gutterBottom>
               Facciamo un esempio: immaginiamo di voler calcolare il punteggio di Alleanza Verdi e Sinistra
@@ -221,12 +228,12 @@ function App() {
             </Typography>
                 
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} lg={8}>
             <Typography gutterBottom>
               Dettagli sul <a href="https://github.com/fornaeffe/valore_voto">repository di github</a>
             </Typography>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} lg={8}>
             <Typography gutterBottom>
               In questa pagina non vengono raccolti dati né viene fatto uso di cookie.
             </Typography>
