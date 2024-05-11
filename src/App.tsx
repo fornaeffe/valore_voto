@@ -239,7 +239,7 @@ function App() {
             <Typography gutterBottom>
               A questo punto moltiplico ciascuno di questi numeri per la preferenza che ho assegnato:
             </Typography>
-            <Grid container columns={5} justifyContent={'space-between'}>
+            <Grid container columns={5} justifyContent={'space-between'} sx={{marginBottom : 1}}>
               <Grid item>
                 -2 per <SentimentVeryDissatisfiedIcon color="error" />
               </Grid>
@@ -278,10 +278,24 @@ function App() {
           </Grid>
           <Grid item xs={12}>
             <Typography gutterBottom>
+              Questa web app è stata realizzata come passatempo, simulando i risultati
+              elettorali attraverso un modello che semplifica la realtà e si basa
+              su sondaggi elettorali: di conseguenza i risultati mostrati potrebbero
+              non corrispondere alla realtà. Usatela senza prendere per verità assoluta
+              i risultati mostrati, e considerate anche gli altri aspetti del valore
+              dell'esercizio del diritto di voto: votare potrebbe non servire soltanto
+              per eleggere i membri del Parlamento Europeo ma anche, tra le altre cose,
+              per dimostrare supporto ad una formazione politica o a persone specifiche
+              all'interno di una lista.
+            </Typography>
+            <Typography gutterBottom>
+              Per trasparenza, avviso che sono iscritto al partito Europa Verde.
+            </Typography>
+            <Typography gutterBottom>
               In questa pagina non vengono raccolti dati né viene fatto uso di cookie.
             </Typography>
             <Typography gutterBottom>
-              Creato da Luca Fornasari. Disclaimer: per trasparenza, avviso che sono iscritto al partito Europa Verde.
+              Creato da <a href='https://fornaeffe.github.io'>Luca Fornasari</a> (<a href='mailto:fornaeffe@gmail.com'>fornaeffe@gmail.com</a>).
             </Typography>
           </Grid>
         </Grid>
