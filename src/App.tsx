@@ -22,8 +22,6 @@ import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
 import RigaEffetto from './RigaEffetto';
 
-// TODO: spostare in fondo altre liste e togliere l'underscore
-
 type Stato = {
   partitoSelezionato : number,
   partiti : string[],
