@@ -14,7 +14,7 @@ export default function RigaOutput(props: {partito: string, effetto: number, min
             <ListItemText primary={
                 props.partito + 
                 ": " + 
-                (props.effetto > 0 ? "+" : "-" ) +
+                (props.effetto > 0 ? "+" : (props.effetto < 0 ? "-" : "") ) +
                 " " +
                 Math.abs(props.effetto).toFixed(1)
             } />

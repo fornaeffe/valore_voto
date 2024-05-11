@@ -133,7 +133,7 @@ function App() {
 
           <Grid item xs={12}>
             <div className='riga-seleziona-partito'>
-              <Typography variant="h6" sx={{marginRight : 1}}>Effetti di un voto a&nbsp;</Typography>
+              <Typography variant="h6" sx={{marginRight : 1}}>Effetti di un voto a</Typography>
 
               <FormControl variant='standard' sx={{ minWidth: 90, marginBottom: 1}}>
                 {/* <InputLabel id="seleziona-partito-label">Lista</InputLabel> */}
