@@ -12,7 +12,6 @@ import RigaOutput from './RigaOutput';
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
@@ -117,11 +116,11 @@ function App() {
   return (
     <>
       <CssBaseline />
-      <Container maxWidth="md">
+      <Container maxWidth="md" sx={{paddingTop : 1}}>
         <Grid container spacing={4}>
 
           <Grid item xs={12}>
-            <Typography variant="h4">Chi mi conviene votare?</Typography>
+            <Typography variant="h4" gutterBottom>Chi mi conviene votare?</Typography>
             <Typography variant="body1" maxWidth={"md"}>
               Un calcolatore del "voto utile" per le Europee 2024: 
               scopri come il voto può aiutare (o ostacolare)
@@ -134,9 +133,9 @@ function App() {
 
           <Grid item xs={12}>
             <div className='riga-seleziona-partito'>
-              <Typography variant="h6" gutterBottom>Effetti di un voto a&nbsp;</Typography>
+              <Typography variant="h6" sx={{marginRight : 1}}>Effetti di un voto a&nbsp;</Typography>
 
-              <FormControl variant='standard' sx={{ minWidth: 90 }}>
+              <FormControl variant='standard' sx={{ minWidth: 90, marginBottom: 1}}>
                 {/* <InputLabel id="seleziona-partito-label">Lista</InputLabel> */}
                 <Select
                   id="seleziona-partito"
@@ -238,13 +237,25 @@ function App() {
               Questo risultato è quello visibile nella prima tabella.                                    
             </Typography>
             <Typography gutterBottom>
-              A questo punto moltiplico ciascuno di questi numeri per la preferenza che ho assegnato: <br />
-              -2 per <SentimentVeryDissatisfiedIcon color="error" /><br />
-              -1 per <SentimentDissatisfiedIcon color="error" /><br />
-              0 per <SentimentSatisfiedIcon color="warning" /><br />
-              +1 per <SentimentSatisfiedAltIcon color="success" /><br />
-              +2 per <SentimentVerySatisfiedIcon color="success" /><br />                                   
+              A questo punto moltiplico ciascuno di questi numeri per la preferenza che ho assegnato:
             </Typography>
+            <Grid container columns={5} justifyContent={'space-between'}>
+              <Grid item>
+                -2 per <SentimentVeryDissatisfiedIcon color="error" />
+              </Grid>
+              <Grid item>
+                -1 per <SentimentDissatisfiedIcon color="error" />
+              </Grid>
+              <Grid item>
+                0 per <SentimentSatisfiedIcon color="warning" />
+              </Grid>
+              <Grid item>
+                +1 per <SentimentSatisfiedAltIcon color="success" />
+              </Grid>
+              <Grid item>
+                +2 per <SentimentVerySatisfiedIcon color="success" />
+              </Grid>
+            </Grid>
             <Typography gutterBottom>
               Ad esempio, se un voto ad Alleanza Verdi e Sinistra in media aggiunge tre milionesimi di seggio ad Alleanza Verdi e Sinistra
               ma nello stesso tempo ne toglie un milionesimo al Partito Democratico, 
