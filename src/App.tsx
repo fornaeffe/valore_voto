@@ -125,7 +125,7 @@ function App() {
               l'elezione dei candidati di ciascuna lista,
               indica le liste che ti rappresentano di più,
               e calcola il voto più efficace per rendere il Parlamento Europeo
-              più vicino alle tue iee.
+              più vicino alle tue idee.
             </Typography>
           </Grid>
 
