@@ -273,7 +273,9 @@ function App() {
           </Grid>
           <Grid item xs={12}>
             <Typography gutterBottom>
-              Dettagli sul <a href="https://github.com/fornaeffe/valore_voto">repository di github</a>
+              Dettagli sul <a href="https://github.com/fornaeffe/valore_voto">repository di github</a>.<br />
+
+              <a href='https://github.com/fornaeffe/valore_voto/issues'>Suggerimenti o segnalazione di problemi</a> sono i benvenuti.
             </Typography>
           </Grid>
           <Grid item xs={12}>
@@ -295,7 +297,7 @@ function App() {
               In questa pagina non vengono raccolti dati né viene fatto uso di cookie.
             </Typography>
             <Typography gutterBottom>
-              Creato da <a href='https://fornaeffe.github.io'>Luca Fornasari</a> (<a href='mailto:fornaeffe@gmail.com'>fornaeffe@gmail.com</a>).
+              Creato da <a href='https://fornaeffe.github.io'>Luca Fornasari</a>.
             </Typography>
           </Grid>
         </Grid>
