@@ -11,7 +11,7 @@ intervallo <- 1000
 # Dati
 
 seggi <- 76
-elettori <- 46000000
+elettori <- 46000000 # TODO: aggiornare il valore
 
 liste_sondaggi <- read_xlsx("dati.xlsx")
 
@@ -24,7 +24,7 @@ altre_liste <- aggregate(
 )
 
 altre_liste$Percentuale <- 1 - altre_liste$Percentuale
-altre_liste$Partito <- "altre_liste"
+altre_liste$Partito <- "altre liste"
 
 liste_sondaggi <- rbind(liste_sondaggi, altre_liste)
 
@@ -77,13 +77,16 @@ simulazione <- function(simulaizone, liste, intervallo, elettori, astensione, se
     liste$p <- liste$voti / sum(liste$voti)
     
     # Sbarramento
-    liste$soglia <- liste$p >= 0.04 & liste$Partito != "altre_liste"
+    liste$soglia <- liste$p >= 0.04 & liste$Partito != "altre liste"
     
     # Quoziente elettorale nazionale
     qn <- floor(sum(liste$voti[liste$soglia]) / seggi)
     
+    # Seggi interi
     liste$seggi_interi <- floor(liste$voti / qn) * liste$soglia
     
+    # Distribuzione dei seggi mancanti alle liste
+    # con i maggiori resti
     seggi_mancanti <- seggi - sum(liste$seggi_interi)
     
     liste$resti <- liste$voti %% qn * liste$soglia
@@ -105,7 +108,9 @@ simulazione <- function(simulaizone, liste, intervallo, elettori, astensione, se
   }
   
   
-  
+  # Funzione che calcola quanto cambiano i seggi
+  # aggiungendo un certo numero di voti
+  # alla lista i
   calcola_effetto <- function(i, liste, intervallo) {
     liste2 <- liste
     liste2$voti[i] <- liste2$voti[i] + intervallo
@@ -113,6 +118,8 @@ simulazione <- function(simulaizone, liste, intervallo, elettori, astensione, se
     return(scrutinio(liste2) - scrutinio(liste))
   }
   
+  # Aggiungo voti a ciascouna lista e
+  # guardo come cambiano i voti alle altre liste
   return(sapply(
     seq_len(nrow(liste)), 
     calcola_effetto, 
@@ -121,6 +128,7 @@ simulazione <- function(simulaizone, liste, intervallo, elettori, astensione, se
   ))
 }
 
+# Svolgo le simulazioni (in parallelo per velocizzare il calcolo)
 cl <- makeCluster(parallel::detectCores())
 
 risultato <- parSapply(
@@ -137,17 +145,29 @@ risultato <- parSapply(
 
 stopCluster(cl)
 
+# Faccio la media degli effetti tra tutte le simulazioni,
+# esprimendola come milionesimi di seggio
 matrice <- apply(risultato, c(1,2), mean) / intervallo * 1000000
-
-
 dimnames(matrice) <- list(effetto_su = liste$Partito, voto_a = liste$Partito)
+
+# Sposto "altre liste" in fondo
+ordine <- order(
+  rownames(matrice) == "altre liste",
+  rownames(matrice)
+)
+matrice <- matrice[ordine, ordine]
 
 matrice
 
-# write.csv(matrice, "matrice.csv")
-# 
+# Salvo la matrice
+write.csv(matrice, "matrice.csv")
+
+# Togliere il commento alla prossima riga e iniziare
+# da qui se non si vuole rifare il processo di generazione della
+# matrice, ma solo modificarla
 # matrice <- read.csv("matrice.csv", row.names = 1)
 
+# Preparo il file JSON
 library(RJSONIO)
 
 matricePerJSON <- matrice
