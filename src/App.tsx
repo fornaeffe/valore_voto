@@ -146,8 +146,9 @@ function App() {
               </FormControl>
             </div>
             <Typography variant="body1">
-              I numeri indicano quali sono le probabilità (su un milione) che un voto 
-              a {stato?.partiti[stato.partitoSelezionato]} aggiunga (o tolga) un seggio a ciascuna di queste liste:
+              I numeri indicano quali sono le probabilità (su un milione) che un voto in più
+              a {stato?.partiti[stato.partitoSelezionato]} aggiunga (o tolga) un seggio a ciascuna di queste liste
+              (dati gli attuali sondaggi):
             </Typography>            
             <List>
               {arrayEffetti}
